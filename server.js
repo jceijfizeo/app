@@ -1,6 +1,7 @@
 const Prometheus = require('prom-client')
 const express = require('express');
 const http = require('http');
+const { Pool } = require('pg');
 
 Prometheus.collectDefaultMetrics();
 
@@ -25,6 +26,10 @@ const requestTimer = (req, res, next) => {
   next()
 }
 
+const pool = new Pool({
+  // Les informations de connexion sont automatiquement lues
+  // depuis les variables d'environnement (PGUSER, PGHOST, PGDATABASE, PGPASSWORD, PGPORT)
+});
 const app = express();
 const server = http.createServer(app)
 
@@ -54,6 +59,18 @@ app.get('/', (req, res) => {
   // Use req.log (a `pino` instance) to log JSON:
   req.log.info({message: 'Hello from Node.js Starter Application!'});
   res.send('Hello from Node.js Starter Application!');
+});
+
+app.get('/db', async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query('SELECT NOW()');
+    res.status(200).json(result.rows[0]);
+    client.release();
+  } catch (err) {
+    req.log.error(err, 'Error connecting to db');
+    res.status(500).send('Error connecting to database');
+  }
 });
 
 app.get('*', (req, res) => {
