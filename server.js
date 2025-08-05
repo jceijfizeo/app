@@ -64,6 +64,10 @@ app.get('/', (req, res) => {
   res.send('Hello from Node.js Starter Application!');
 });
 
+app.get('/g', async (req, res) => {
+  res.status(200).send(process.env.VALUE);
+})
+
 app.get('/db', async (req, res) => {
   try {
     const client = await pool.connect();
