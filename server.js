@@ -1,8 +1,8 @@
+require('dotenv').config();
 const Prometheus = require('prom-client')
 const express = require('express');
 const http = require('http');
 const { Pool } = require('pg');
-
 Prometheus.collectDefaultMetrics();
 
 const requestHistogram = new Prometheus.Histogram({
@@ -27,8 +27,11 @@ const requestTimer = (req, res, next) => {
 }
 
 const pool = new Pool({
-  // Les informations de connexion sont automatiquement lues
-  // depuis les variables d'environnement (PGUSER, PGHOST, PGDATABASE, PGPASSWORD, PGPORT)
+  host: process.env.PGHOST,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  database: process.env.PGDATABASE,
+  port: process.env.PGPORT,
 });
 const app = express();
 const server = http.createServer(app)
