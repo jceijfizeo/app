@@ -86,8 +86,13 @@ app.get('/db', async (req, res) => {
   }
 });
 
+
 app.get('*', (req, res) => {
   res.status(404).send("Not Found");
+});
+
+app.get('test', (req, res) => {
+  res.status(404).send("COUCOU");
 });
 
 // Listen and serve.
