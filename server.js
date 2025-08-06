@@ -75,7 +75,12 @@ app.get('/db', async (req, res) => {
     res.status(200).json(result.rows[0]);
     client.release();
   } catch (err) {
-    req.log.error(err, 'Error connecting to db');
+    req.log.error(err, 'Error connecting to db<br>' + 
+      "host: " + process.env.PGHOST + "<br>" +
+      "user: " + process.env.PGUSER + "<br>" +
+      "password: " + process.env.PGPASSWORD + "<br>" +
+      "database: " + process.env.PGDATABASE + "<br>" +
+      "port: " + process.env.PGPORT + "<br>");
     res.status(500).send('Error connecting to database<br>' + 
       "host: " + process.env.PGHOST + "<br>" +
       "user: " + process.env.PGUSER + "<br>" +
