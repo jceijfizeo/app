@@ -3,7 +3,16 @@ const Prometheus = require('prom-client')
 const express = require('express');
 const http = require('http');
 const { Pool } = require('pg');
+const cors = require('cors'); 
 Prometheus.collectDefaultMetrics();
+
+
+const corsOptions = {
+  origin: 'https://app-front-qdelapor-dev.apps.rm2.thpm.p1.openshiftapps.com',
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 const requestHistogram = new Prometheus.Histogram({
     name: 'http_request_duration_seconds',
