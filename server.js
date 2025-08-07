@@ -39,8 +39,7 @@ const server = http.createServer(app)
 
 // Enable CORS with specific origin
 const corsOptions = {
-  origin: 'https://app-front-qdelapor-dev.apps.rm2.thpm.p1.openshiftapps.com',
-  optionsSuccessStatus: 200 // For legacy browser support
+  origin: '*'
 };
 app.use(cors(corsOptions));
 
