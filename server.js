@@ -3,6 +3,7 @@ const Prometheus = require('prom-client')
 const express = require('express');
 const http = require('http');
 const { Pool } = require('pg');
+const cors = require('cors');
 Prometheus.collectDefaultMetrics();
 
 const requestHistogram = new Prometheus.Histogram({
@@ -48,6 +49,9 @@ app.get('/metrics', async (req, res, next) => {
   res.set('Content-Type', Prometheus.register.contentType)
   res.end(metrics);
 })
+
+// Enable CORS for all routes
+app.use(cors());
 
 // Time routes after here.
 app.use(requestTimer);
