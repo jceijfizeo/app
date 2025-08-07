@@ -37,6 +37,13 @@ const pool = new Pool({
 const app = express();
 const server = http.createServer(app)
 
+// Enable CORS with specific origin
+const corsOptions = {
+  origin: 'https://app-front-qdelapor-dev.apps.rm2.thpm.p1.openshiftapps.com',
+  optionsSuccessStatus: 200 // For legacy browser support
+};
+app.use(cors(corsOptions));
+
 // See: http://expressjs.com/en/4x/api.html#app.settings.table
 const PRODUCTION = app.get('env') === 'production';
 
@@ -49,9 +56,6 @@ app.get('/metrics', async (req, res, next) => {
   res.set('Content-Type', Prometheus.register.contentType)
   res.end(metrics);
 })
-
-// Enable CORS for all routes
-app.use(cors());
 
 // Time routes after here.
 app.use(requestTimer);
